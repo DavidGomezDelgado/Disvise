@@ -1,10 +1,13 @@
 package com.disvise.disvise;
 
+import com.disvise.disvise.advise.Advise;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 @SpringBootApplication
@@ -28,7 +31,17 @@ public class DisviseApplication {
 
 	//al microcontrolador y este se va a encargar de consumirlos
 	@GetMapping(path = "/") //mapeamos para que esta funcion se pueda consultar desde el navegador (solo usado para debuggear)
-	public List<Integer> avisos(){
-		return List.of(1,2,3,4);
+	public List<Advise> avisos(){
+		return List.of(
+				new Advise(
+				1,
+				123456L,
+				25,
+				10,
+				LocalDate.of(2025, Month.MARCH, 17),
+				22
+				)
+		);
+
 	}
 }
