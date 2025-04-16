@@ -8,4 +8,10 @@
 void setup(TFT_eSPI& tft, unsigned long& targetTime);
 void loop(TFT_eSPI& tft, unsigned long& targetTime, uint32_t& running);
 
+// Declaración de la función que actualizará el color
+uint16_t updateColour();
+
+void IRAM_ATTR handleButton1();
+void IRAM_ATTR handleButton2();
+
 #endif  // SETUP_LOOP_H
