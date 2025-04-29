@@ -7,6 +7,13 @@
 // Implementación de la función setup
 void setup(TFT_eSPI& tft, unsigned long& targetTime)
 {
+    
+    uint32_t running = 0;
+
+    button1Pressed = false;
+    button2Pressed = false;
+    estado = 0; //Tambiën se puede almacenar en RAM con RTC_DATA_ATTR para que su valor no sea afectado por deep_sleep
+
     Serial.begin(115200);//Para depurar y monitorizar desde el monitor
 
     //To activate the backlight, set GPIO15 to HIGH
