@@ -1,39 +1,28 @@
-#include <TFT_eSPI.h>  // Librería de gráficos y fuente para el chip controlador ST7735
-#include <SPI.h>        // Para SPI
-#include "../headers/logiccpp.h"  // Incluir el archivo de cabecera
+#include <TFT_eSPI.h>            // Librería de gráficos y fuente para el chip controlador ST7735
+#include <SPI.h>                 // Para SPI
+#include "../headers/logiccpp.h" // Incluir el archivo de cabecera
 #include "../headers/pin_config.h"
 #include "../headers/variables.h"
 
 // Implementación de la función setup
-void setup(TFT_eSPI& tft, unsigned long& targetTime)
+void setup(TFT_eSPI &tft, unsigned long &targetTime)
 {
-    
-    uint32_t running = 0;
+    Serial.begin(115200); // Para depurar y monitorizar desde el monitor
+    delay(200);
 
-    button1Pressed = false;
-    button2Pressed = false;
-    estado = 0; //Tambiën se puede almacenar en RAM con RTC_DATA_ATTR para que su valor no sea afectado por deep_sleep
+    ::setup_wifi();
+    ::setup_deep_sleep();
 
-    Serial.begin(115200);//Para depurar y monitorizar desde el monitor
-
-    //To activate the backlight, set GPIO15 to HIGH
+    // To activate the backlight, set GPIO15 to HIGH
     pinMode(PIN_POWER_ON, OUTPUT);
     digitalWrite(PIN_POWER_ON, HIGH);
 
-    //GPIO Boton
-    
-    pinMode(PIN_BUTTON_1, INPUT_PULLUP); //Detecta flanco de bajada
-    attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), handleButton1, RISING); //Activa la interrupción al quitar la pulsación del botón
+    // GPIO Boton
+    pinMode(PIN_BUTTON_1, INPUT_PULLUP);                                         // Detecta flanco de bajada
+    attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), handleButton1, FALLING); // Activa la interrupción al quitar la pulsación del botón
 
-    tft.init();
-    tft.setRotation(0);
-    tft.fillScreen(TFT_BLACK);
+    pinMode(PIN_BUTTON_2, INPUT_PULLUP);                                         // Detecta flanco de bajada
+    attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_2), handleButton2, FALLING); // Activa la interrupción al quitar la pulsación del botón
 
-    // Mostrar colores de prueba
-    tft.fillScreen(TFT_RED); delay(1000);
-    tft.fillScreen(TFT_GREEN); delay(1000);
-    tft.fillScreen(TFT_BLUE); delay(1000);
 
-    targetTime = millis() + 1000;
 }
-

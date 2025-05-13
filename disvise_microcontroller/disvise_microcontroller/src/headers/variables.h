@@ -1,9 +1,19 @@
+#include <Arduino.h>
+
 #pragma once
 
 extern volatile bool button1Pressed;
 extern volatile bool button2Pressed;
-extern volatile int estado;
+//Control de rebote por software
+extern volatile unsigned long lastDebounceTime;
+const unsigned long debounceDelay = 50; // ms
+
+RTC_DATA_ATTR extern int estado; //quiero mantener su valor despues del modo suspensión
+
+RTC_DATA_ATTR extern int suspendedtime;
+
+extern volatile int funcion;
 
 //Variables para conexión Wifi:
-const char* ssid = "TU_SSID";
-const char* password = "TU_CONTRASEÑA";
+extern const char* ssid;
+extern const char* password;

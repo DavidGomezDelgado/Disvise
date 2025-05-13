@@ -17,7 +17,7 @@ void setup_wifi(){
     Serial.print(".");
   }
 
-  Serial.println("\n✅ WiFi conectado!");
-  Serial.print("📶 Dirección IP: ");
+  Serial.println("\n WiFi conectado!");
+  Serial.print(" Dirección IP: ");
   Serial.println(WiFi.localIP());
 }
