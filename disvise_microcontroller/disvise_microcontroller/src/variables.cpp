@@ -8,3 +8,6 @@ RTC_DATA_ATTR int estado = 0; // Tambiën se puede almacenar en RAM con RTC_DATA
 
 RTC_DATA_ATTR int suspendedtime = 5;
 
+
+
+int function = 0;

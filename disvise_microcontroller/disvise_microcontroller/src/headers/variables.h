@@ -17,3 +17,8 @@ extern volatile int funcion;
 //Variables para conexión Wifi:
 extern const char* ssid;
 extern const char* password;
+
+//peticion api
+extern const char* api_url;
+
+extern int function;

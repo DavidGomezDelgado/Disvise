@@ -12,38 +12,44 @@ void loop(TFT_eSPI &tft, unsigned long &targetTime, uint32_t &running)
     switch (estado)
     {
     case 0:
-        tft.init();
-        tft.setRotation(1);
-        tft.fillScreen(TFT_BLACK);
-
-        // --- Icono del ordenador ---
-        tft.fillRect(40, 20, 120, 60, TFT_BLUE);    // Pantalla
-        tft.fillRect(60, 85, 80, 10, TFT_DARKGREY); // Base
-        tft.drawRect(40, 20, 120, 60, TFT_WHITE);   // Borde pantalla
-        tft.drawRect(60, 85, 80, 10, TFT_WHITE);    // Borde base
-
-        // --- Texto debajo del icono ---
-        tft.setTextColor(TFT_WHITE, TFT_BLACK);
-        tft.setTextDatum(MC_DATUM);                                   // Centrado horizontal
-        tft.drawString("Caja registradora", 105, 110, 2); // 
-
-        // --- Texto al lado de los botones ---
-        // Asumiendo que botón 1 está a la izquierda y botón 2 a la derecha
-        tft.setTextDatum(TL_DATUM);                          // Top-left para posicionar manualmente
-        tft.drawString("Siguiente", tft.width() - 65, 10, 2);             // Cerca del botón 1 (izquierda)
-        tft.drawString("Ocupado", tft.width() - 65, 150, 2); // Cerca del botón 2 (derecha)
 
         Serial.println("Estoy en el estado 0 de suspension");
-        estado = 3;
+        estado = 1;
         // deep_sleep_mode(suspendedtime);
         break;
     case 1:
         // Realizar consulta http
-        // chequear que es una petición valida
-        // Cambiar valor de la función según la recibida
+        recibirDeAPI(function);
+        if(function != -1)
+            estado = 2;
         break;
     case 2:
         // mostrar el resultado de la petición en la pantalla
+        Serial.println(function);
+        if (function == 25)
+        {
+            tft.init();
+            tft.setRotation(1);
+            tft.fillScreen(TFT_BLACK);
+
+            // --- Icono del ordenador ---
+            tft.fillRect(40, 20, 120, 60, TFT_BLUE);    // Pantalla
+            tft.fillRect(60, 85, 80, 10, TFT_DARKGREY); // Base
+            tft.drawRect(40, 20, 120, 60, TFT_WHITE);   // Borde pantalla
+            tft.drawRect(60, 85, 80, 10, TFT_WHITE);    // Borde base
+
+            // --- Texto debajo del icono ---
+            tft.setTextColor(TFT_WHITE, TFT_BLACK);
+            tft.setTextDatum(MC_DATUM);                       // Centrado horizontal
+            tft.drawString("Caja registradora", 105, 110, 2); //
+
+            // --- Texto al lado de los botones ---
+            // Asumiendo que botón 1 está a la izquierda y botón 2 a la derecha
+            tft.setTextDatum(TL_DATUM);                           // Top-left para posicionar manualmente
+            tft.drawString("Siguiente", tft.width() - 65, 10, 2); // Cerca del botón 1 (izquierda)
+            tft.drawString("Ocupado", tft.width() - 65, 150, 2);  // Cerca del botón 2 (derecha)
+        }
+        estado = 3;
         break;
     case 3:
         // Esperamos que se pulse un botón

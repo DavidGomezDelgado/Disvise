@@ -4,6 +4,8 @@
 #include <TFT_eSPI.h>  // Para usar la librería TFT_eSPI
 #include <SPI.h>        // Para SPI
 
+#include <ArduinoJson.h>
+
 //Setup y loop
 void setup(TFT_eSPI& tft, unsigned long& targetTime);
 void setup_wifi();
@@ -17,5 +19,7 @@ void deep_sleep_mode(long segundos);
 
 void IRAM_ATTR handleButton1();
 void IRAM_ATTR handleButton2();
+
+void recibirDeAPI(int& function);
 
 #endif  // SETUP_LOOP_H

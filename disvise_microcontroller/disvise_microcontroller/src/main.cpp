@@ -10,6 +10,7 @@ TFT_eSPI tft = TFT_eSPI();  // Invocar la librería con los pines definidos en U
 unsigned long targetTime = 0;
 uint32_t running = 0;
 
+
 //Función para inicializar cosas
 void setup() {
     ::setup(tft, targetTime);  // Llamar a la función setup desde setup_loop.cpp
