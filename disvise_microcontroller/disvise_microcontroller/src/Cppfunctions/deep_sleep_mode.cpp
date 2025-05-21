@@ -1,4 +1,5 @@
 #include <Arduino.h> 
+#include "../headers/variables.h"
 
 void deep_sleep_mode(long segundos){
     // Configurar temporizador de despertado

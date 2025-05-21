@@ -8,6 +8,13 @@ RTC_DATA_ATTR int estado = 0; // Tambiën se puede almacenar en RAM con RTC_DATA
 
 RTC_DATA_ATTR int suspendedtime = 5;
 
+const char* ssid = "";
+const char* password = "";
 
+const char* api_url = "";
 
 int function = 0;
+char place[32] = "";
+
+unsigned long startMillis = 0;
+

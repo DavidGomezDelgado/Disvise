@@ -16,10 +16,11 @@ void loop(TFT_eSPI& tft, unsigned long& targetTime, uint32_t& running);
 //Funciones:
 uint16_t updateColour();
 void deep_sleep_mode(long segundos);
+void show_screen(int function, char* place,TFT_eSPI &tft);
 
 void IRAM_ATTR handleButton1();
 void IRAM_ATTR handleButton2();
 
-void recibirDeAPI(int& function);
+void recibirDeAPI(int& function, char* place);
 
 #endif  // SETUP_LOOP_H

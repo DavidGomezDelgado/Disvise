@@ -22,3 +22,6 @@ extern const char* password;
 extern const char* api_url;
 
 extern int function;
+extern char place[32];
+
+extern unsigned long startMillis;

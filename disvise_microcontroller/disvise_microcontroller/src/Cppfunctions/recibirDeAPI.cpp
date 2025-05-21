@@ -6,7 +6,7 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-void recibirDeAPI(int& function){
+void recibirDeAPI(int& function, char* place){
     
     if ((WiFi.status() == WL_CONNECTED)) {
     HTTPClient http;
@@ -19,21 +19,23 @@ void recibirDeAPI(int& function){
       Serial.println(payload);
 
       // Parsear con ArduinoJson
-      const size_t capacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(6) + 60;
+      const size_t capacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(6) + 256;
       DynamicJsonDocument doc(capacity);
       DeserializationError error = deserializeJson(doc, payload);
 
+
+      //A futuro solo necesitare place y function
       if (!error && doc.size() > 0) {
         JsonObject advise = doc[0];
         int priority = advise["priority"];
         long magicNumber = advise["magicNumber"];
         function = advise["function"];
-        int place = advise["place"];
+        strcpy(place, advise["place"]);
         const char* date = advise["date"];
         int destiny = advise["destiny"];
 
         Serial.println("Primer aviso:");
-        Serial.printf("Priority: %d, MagicNumber: %ld, Function: %d, Place: %d, Fecha: %s, Destiny: %d\n",
+        Serial.printf("Priority: %d, MagicNumber: %ld, Function: %d, Place: %s, Fecha: %s, Destiny: %d\n",
                       priority, magicNumber, function, place, date, destiny);
       } else {
         Serial.println("Error al parsear JSON o array vacío");

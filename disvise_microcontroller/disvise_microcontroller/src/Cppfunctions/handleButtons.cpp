@@ -3,6 +3,7 @@
 #include <Arduino.h>
 
 void IRAM_ATTR handleButton1() {
+    button1Pressed = true;
     unsigned long currentTime = millis();
     if (currentTime - lastDebounceTime > debounceDelay && estado == 3) {
         estado = 4;
@@ -11,6 +12,7 @@ void IRAM_ATTR handleButton1() {
 }
 
 void IRAM_ATTR handleButton2() {
+    button2Pressed = true;
     unsigned long currentTime = millis();
     if (currentTime - lastDebounceTime > debounceDelay && estado == 3) {
         estado = 5;
