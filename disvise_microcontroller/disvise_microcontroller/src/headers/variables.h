@@ -15,8 +15,13 @@ RTC_DATA_ATTR extern int suspendedtime;
 extern volatile int funcion;
 
 //Variables para conexión Wifi:
-extern const char* ssid;
-extern const char* password;
+//const char* ssid = "Galaxy A34 5G EF7B";
+//const char* password = "tsyaz45pxe522tf";
+
+const char* ssid = "MIWIFI_RHhA";
+const char* password = "Qf6hpdPY";
+
+const char* api_url = "http://192.168.1.138:8080/";
 
 //peticion api
 extern const char* api_url;

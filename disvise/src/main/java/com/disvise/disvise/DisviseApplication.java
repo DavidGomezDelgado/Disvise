@@ -37,7 +37,7 @@ public class DisviseApplication {
 				1,
 				123456L,
 				25,
-				10,
+				"Caja Registradora",
 				LocalDate.of(2025, Month.MARCH, 17),
 				22
 				)

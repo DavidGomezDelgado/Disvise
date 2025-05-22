@@ -12,14 +12,14 @@ public class Advise {
 
     private int function; //Un entero encargado de decir qué funcion del microcontrolador se va a realizar
 
-    private int place; //Otro entero que indica un lugar, esto va a usar para saber que icono mostrar en la pantalla
+    private String place; //Otro entero que indica un lugar, esto va a usar para saber que icono mostrar en la pantalla
 
     private LocalDate date; //La hora local
 
     private int destiny; //Un id que almacenará a qué cola de RabbitMQ enviará la información (elemento no guardable en la lista pero muy útil)
 
     //Constructor completo
-    public Advise(int priority, Long magicNumber, int function, int place, LocalDate date, int destiny) {
+    public Advise(int priority, Long magicNumber, int function, String place, LocalDate date, int destiny) {
         this.priority = priority;
         MagicNumber = magicNumber;
         this.function = function;
@@ -56,11 +56,11 @@ public class Advise {
         this.function = function;
     }
 
-    public int getPlace() {
+    public String getPlace() {
         return place;
     }
 
-    public void setPlace(int place) {
+    public void setPlace(String place) {
         this.place = place;
     }
 
