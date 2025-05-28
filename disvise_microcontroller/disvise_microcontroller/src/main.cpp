@@ -18,7 +18,6 @@ void setup() {
 }
 
 void loop() {
-    Serial.println("Entro al loop con "+ estado);
     ::loop(tft, targetTime, running);  // Llamar a la función loop desde setup_loop.cpp
 }
 
