@@ -22,5 +22,6 @@ void IRAM_ATTR handleButton1();
 void IRAM_ATTR handleButton2();
 
 void recibirDeAPI(int& function, char* place);
+void mandarPeticion(int function);
 
 #endif  // SETUP_LOOP_H

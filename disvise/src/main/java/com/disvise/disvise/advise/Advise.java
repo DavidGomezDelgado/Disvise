@@ -2,6 +2,7 @@ package com.disvise.disvise.advise;
 
 import java.time.LocalDate;
 
+//Objeto que se almacenará en una lista o BBDD
 public class Advise {
     //La lista de todas las peticiones se gestionarán por RabbitMQ
 
@@ -10,22 +11,24 @@ public class Advise {
 
     private Long MagicNumber; //Magic Number encargado de filtrar si la petición ha sido realizada desde este programa (Seguridad)
 
-    private int function; //Un entero encargado de decir qué funcion del microcontrolador se va a realizar
-
-    private String place; //Otro entero que indica un lugar, esto va a usar para saber que icono mostrar en la pantalla
+    private AdviseToControler advise;
 
     private LocalDate date; //La hora local
 
-    private int destiny; //Un id que almacenará a qué cola de RabbitMQ enviará la información (elemento no guardable en la lista pero muy útil)
+    private String destiny; //Un id que almacenará a qué cola de RabbitMQ enviará la información
 
     //Constructor completo
-    public Advise(int priority, Long magicNumber, int function, String place, LocalDate date, int destiny) {
-        this.priority = priority;
-        MagicNumber = magicNumber;
-        this.function = function;
-        this.place = place;
-        this.date = date;
-        this.destiny = destiny;
+    public Advise(int priority, Long magicNumber, AdviseToControler advise, LocalDate date, String destiny) {
+        if (advise == null) {
+            throw new IllegalArgumentException("El parámetro 'advise' no puede ser null");
+        }else{
+            this.priority = priority;
+            MagicNumber = magicNumber;
+            this.advise = new AdviseToControler(advise.getFunction());
+            this.date = date;
+            this.destiny = destiny;
+        }
+
     }
     //Constructor vacio
     public Advise(){
@@ -48,22 +51,6 @@ public class Advise {
         MagicNumber = magicNumber;
     }
 
-    public int getFunction() {
-        return function;
-    }
-
-    public void setFunction(int function) {
-        this.function = function;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
     public LocalDate getDate() {
         return date;
     }
@@ -72,11 +59,11 @@ public class Advise {
         this.date = date;
     }
 
-    public int getDestiny() {
+    public String getDestiny() {
         return destiny;
     }
 
-    public void setDestiny(int destiny) {
+    public void setDestiny(String destiny) {
         this.destiny = destiny;
     }
 }

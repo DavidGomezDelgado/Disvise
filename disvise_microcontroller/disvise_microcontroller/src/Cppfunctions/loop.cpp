@@ -19,10 +19,16 @@ void loop(TFT_eSPI &tft, unsigned long &targetTime, uint32_t &running)
     case 1:
         // Realizar consulta http
         recibirDeAPI(function, place);
-        if(function != -1)
+        Serial.println("funcion: "+ function);
+        if(function != -1){
             estado = 2;
+        }else{
+            estado = 0;
+            deep_sleep_mode(suspendedtime);
+        }
         break;
     case 2:
+        Serial.print(" Estado  2");
         // mostrar el resultado de la petición en la pantalla
         Serial.println(function);
         Serial.println(place);
@@ -50,8 +56,9 @@ void loop(TFT_eSPI &tft, unsigned long &targetTime, uint32_t &running)
          }    
         break;
     case 4:
-        // Pedir a la API si hay otro dispositivo y si lo hay mandar la peticion de vuelta y suspender durante un minuto.
+        //mandar la funcion actual a otro dispositivo
         button1Pressed = false;
+        mandarPeticion(function);
         suspendedtime = 15;
         estado = 0;
         Serial.flush(); // Espera a que se envíen todos los datos por UART

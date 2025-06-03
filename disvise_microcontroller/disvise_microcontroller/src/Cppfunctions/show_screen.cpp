@@ -5,6 +5,7 @@
 #include <SPI.h>                 // Para SPI
 
 void show_screen(int function, char* place,TFT_eSPI &tft){
+    Serial.print(" Mostrar en pantalla ");
     tft.init();
     tft.setRotation(1);
     tft.fillScreen(TFT_BLACK);

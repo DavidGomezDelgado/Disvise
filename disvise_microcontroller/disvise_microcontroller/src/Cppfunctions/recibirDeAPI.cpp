@@ -10,7 +10,11 @@ void recibirDeAPI(int& function, char* place){
     
     if ((WiFi.status() == WL_CONNECTED)) {
     HTTPClient http;
-    http.begin(api_url);
+    char api_request[50];
+    strcpy(api_request, api_url);
+    strcat(api_request, nombre_dispositivo);
+    Serial.println(api_request);
+    http.begin(api_request);
     int httpCode = http.GET();
 
     if (httpCode == 200) {
@@ -19,24 +23,22 @@ void recibirDeAPI(int& function, char* place){
       Serial.println(payload);
 
       // Parsear con ArduinoJson
-      const size_t capacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(6) + 256;
+      const size_t capacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + 16;
       DynamicJsonDocument doc(capacity);
       DeserializationError error = deserializeJson(doc, payload);
 
 
       //A futuro solo necesitare place y function
       if (!error && doc.size() > 0) {
-        JsonObject advise = doc[0];
-        int priority = advise["priority"];
-        long magicNumber = advise["magicNumber"];
-        function = advise["function"];
-        strcpy(place, advise["place"]);
-        const char* date = advise["date"];
-        int destiny = advise["destiny"];
-
+        //Para implementar json con varios valores
+        //JsonObject advise = doc[0];
+        //function = doc["function"];
+        function = doc["function"];
         Serial.println("Primer aviso:");
-        Serial.printf("Priority: %d, MagicNumber: %ld, Function: %d, Place: %s, Fecha: %s, Destiny: %d\n",
-                      priority, magicNumber, function, place, date, destiny);
+        Serial.printf("Function: %d", function);
+        if(function == 25){
+          strcpy(place, "Caja Registradora");
+        }
       } else {
         Serial.println("Error al parsear JSON o array vacío");
       }
