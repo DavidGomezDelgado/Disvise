@@ -1,7 +1,9 @@
 package com.disvise.disvise;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.disvise.disvise.advise.Advise;
 import com.disvise.disvise.advise.AdviseToControler;
+import com.disvise.disvise.advise.BbddControler;
 import com.disvise.disvise.advise.varGlobales;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +38,9 @@ public class DisviseApplication {
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 
+	@Autowired
+	private BbddControler adviseRepository;
+
 	//al microcontrolador y este se va a encargar de consumirlos
 	@GetMapping(path = "/{priority}/{magicNumber}/{function}/{destiny}") //mapeamos para que esta funcion se pueda consultar desde el navegador (solo usado para debuggear)
 	public String avisos(@PathVariable int priority, @PathVariable Long magicNumber, @PathVariable int function, @PathVariable String destiny){
@@ -43,6 +48,10 @@ public class DisviseApplication {
 			AdviseToControler adviseToSend = new AdviseToControler(function);
 			String newDestiny = destiny + "p" + priority;
 			rabbitTemplate.convertAndSend(newDestiny, adviseToSend); //Mensaje en JSON
+
+			//Insertar en la bbdd
+			Advise advise = new Advise(priority, magicNumber, adviseToSend, LocalDate.now(), destiny);
+			adviseRepository.insertarAdvise(advise);
 			//Crear peticion para el microcontrolador y enconlar
 			return "Numero correcto, peticion encolada en " + destiny;
 		}else{
@@ -89,12 +98,23 @@ public class DisviseApplication {
 		// Obtener el primer distinto (ya no está en la lista)
 		String nextControler = varGlobales.listaGlobal.get(0);
 		AdviseToControler adviseToSend = new AdviseToControler(function);
-		String newDestiny = nextControler + "p" + 0;
+		String newDestiny = "";
+		if(varGlobales.prioridades > 1){
+			newDestiny = nextControler + "p" + 1;
+		}else{
+			newDestiny = nextControler + "p" + 0;
+		}
 		rabbitTemplate.convertAndSend(newDestiny, adviseToSend);
 
 		// Encolando el elemento nuevamente pasa a estar como ocupado y sera el ultimo en recibir peticion
 		if (eliminado) varGlobales.listaGlobal.add(id_cola);
 
 		return 1;
+	}
+
+	//Funcion auxiliar para ver la bbdd:
+	@GetMapping("/datos")
+	public List<Advise> obtenerDatos() {
+		return adviseRepository.obtenerTodos();
 	}
 }

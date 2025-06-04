@@ -51,6 +51,15 @@ public class Advise {
         MagicNumber = magicNumber;
     }
 
+    public AdviseToControler getAdvise() {
+        return advise;
+    }
+
+    public void setAdvise(AdviseToControler advise) {
+        this.advise = advise;
+    }
+
+
     public LocalDate getDate() {
         return date;
     }
