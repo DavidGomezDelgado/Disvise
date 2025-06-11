@@ -43,7 +43,8 @@ public class DisviseApplication {
 
 	//al microcontrolador y este se va a encargar de consumirlos
 	@GetMapping(path = "/{priority}/{magicNumber}/{function}/{destiny}") //mapeamos para que esta funcion se pueda consultar desde el navegador (solo usado para debuggear)
-	public String avisos(@PathVariable int priority, @PathVariable Long magicNumber, @PathVariable int function, @PathVariable String destiny){
+	public String avisos(@PathVariable int priority, @PathVariable Long magicNumber,
+						 @PathVariable int function, @PathVariable String destiny){
 		if(magicNumber == 123456L && priority < varGlobales.prioridades){
 			AdviseToControler adviseToSend = new AdviseToControler(function);
 			String newDestiny = destiny + "p" + priority;
@@ -64,10 +65,9 @@ public class DisviseApplication {
 		AdviseToControler result = new AdviseToControler(-1);
 		//Bucle registrando las colas de prioridades
 		String newIdCola = "";
-		boolean mensajeRecibido = false;
 		int i = 0;
 		Object mensaje = null;
-		while (!mensajeRecibido && i < varGlobales.prioridades){
+		while (mensaje == null && i < varGlobales.prioridades){
 			newIdCola = id_cola + "p" + i;
 			mensaje = rabbitTemplate.receiveAndConvert(newIdCola);
 			i++;

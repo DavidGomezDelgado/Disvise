@@ -1,0 +1,31 @@
+@startuml
+
+title Casos de Uso - API REST del Sistema
+
+actor Administrador
+actor Microcontrolador
+actor "Base de Datos" as DB
+
+rectangle "API REST" {
+
+  usecase "Registrar/Actualizar instrucción\n(function, place)" as UC1
+  usecase "Obtener instrucción para dispositivo" as UC2
+  usecase "Confirmar ejecución de instrucción" as UC3
+  usecase "Consultar estado e historial" as UC6
+  usecase "Persistencia y consulta\n(Base de Datos)" as UC5
+}
+
+Administrador --> UC1 : Usar servicio web\n(Frontend)
+Administrador --> UC6 : Ver estado e historial
+
+Microcontrolador --> UC2 : GET /{nombre_dispositivo}
+Microcontrolador --> UC3 : Confirmar ejecución
+
+UC1 --> UC5 : Guardar instrucción
+UC2 --> UC5 : Leer instrucción
+UC3 --> UC5 : Guardar confirmación
+UC6 --> UC5 : Leer historial y estado
+
+UC5 --> DB : Leer/Escribir datos
+
+@enduml

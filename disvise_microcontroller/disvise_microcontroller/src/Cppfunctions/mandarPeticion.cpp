@@ -10,7 +10,11 @@ void mandarPeticion(int function){
     if ((WiFi.status() == WL_CONNECTED)) {
     HTTPClient http;
     char api_request[50];
+    char function_str[5];
+    sprintf(function_str, "%d", function);
     strcpy(api_request, api_url);
+    strcat(api_request, function_str);
+    strcat(api_request, "/");
     strcat(api_request, nombre_dispositivo);
     Serial.println(api_request);
     http.begin(api_request);
@@ -28,17 +32,7 @@ void mandarPeticion(int function){
 
 
       //A futuro solo necesitare place y function
-      if (!error && doc.size() > 0) {
-        //Para implementar json con varios valores
-        //JsonObject advise = doc[0];
-        //function = doc["function"];
-        function = doc["function"];
-        Serial.println("Primer aviso:");
-        Serial.printf("Function: %d", function);
-        if(function == 25){
-          strcpy(place, "Caja Registradora");
-        }
-      } else {
+      if (!error) {
         Serial.println("Error al parsear JSON o array vacío");
       }
     } else {
