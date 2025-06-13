@@ -11,7 +11,9 @@ void recibirDeAPI(int& function, char* place){
     if ((WiFi.status() == WL_CONNECTED)) {
     HTTPClient http;
     char api_request[50];
+    char api_direction[10] = "api/";
     strcpy(api_request, api_url);
+    strcat(api_request, api_direction);
     strcat(api_request, nombre_dispositivo);
     Serial.println(api_request);
     http.begin(api_request);
@@ -36,9 +38,17 @@ void recibirDeAPI(int& function, char* place){
         function = doc["function"];
         Serial.println("Primer aviso:");
         Serial.printf("Function: %d", function);
-        if(function == 25){
-          strcpy(place, "Caja Registradora");
+        switch(function){
+          case 22:
+            strcpy(place, "Carniceria");
+            break;
+          case 25:
+            strcpy(place, "Caja Registradora");
+            break;
+          default:
+          break;
         }
+        
       } else {
         Serial.println("Error al parsear JSON o array vacío");
       }

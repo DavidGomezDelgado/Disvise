@@ -9,7 +9,6 @@ public class varGlobales {
     public static final List<String> listaGlobal =
             Collections.synchronizedList(new ArrayList<>()); //Escalable por si se necesitan hilos
 
-    // Otros ejemplos
     public static int prioridades = 2;
 
     public static String BBDD_URL = ".jdbc:sqlite:C:/Users/12401/Documents/TFG_David/Disvise/disvise/src/main/java/com/disvise/disvise/advise.db";

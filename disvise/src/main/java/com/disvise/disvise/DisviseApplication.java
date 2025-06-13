@@ -41,11 +41,14 @@ public class DisviseApplication {
 	@Autowired
 	private BbddControler adviseRepository;
 
+
 	//al microcontrolador y este se va a encargar de consumirlos
 	@GetMapping(path = "/{priority}/{magicNumber}/{function}/{destiny}") //mapeamos para que esta funcion se pueda consultar desde el navegador (solo usado para debuggear)
 	public String avisos(@PathVariable int priority, @PathVariable Long magicNumber,
 						 @PathVariable int function, @PathVariable String destiny){
-		if(magicNumber == 123456L && priority < varGlobales.prioridades){
+		if(magicNumber == 123456L && priority < varGlobales.prioridades &&
+				varGlobales.listaGlobal.contains(destiny) && priority <= varGlobales.prioridades
+				&& priority >= 0){
 			AdviseToControler adviseToSend = new AdviseToControler(function);
 			String newDestiny = destiny + "p" + priority;
 			rabbitTemplate.convertAndSend(newDestiny, adviseToSend); //Mensaje en JSON
@@ -60,7 +63,7 @@ public class DisviseApplication {
 		}
 	}
 
-	@GetMapping(path = "/{id_cola}")
+	@GetMapping(path = "/api/{id_cola}")
 	public AdviseToControler desencolar(@PathVariable String id_cola){
 		AdviseToControler result = new AdviseToControler(-1);
 		//Bucle registrando las colas de prioridades

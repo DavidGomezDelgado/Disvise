@@ -68,6 +68,8 @@ void loop(TFT_eSPI &tft, unsigned long &targetTime, uint32_t &running)
         // Pido la siguiente peticion
         button2Pressed = false;
         estado = 0;
+        suspendedtime = 0.1;
+        deep_sleep_mode(suspendedtime);
         break;
     default:
         Serial.println("No deberias estar aqui");

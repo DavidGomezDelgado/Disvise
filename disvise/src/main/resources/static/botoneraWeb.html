@@ -1,54 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Botonera de Avisos</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        .formulario { display: none; margin-top: 10px; }
-        .respuesta { margin-top: 20px; color: green; }
-        .boton { margin-bottom: 10px; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Control de Colas Disvise</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    button { margin: 10px 0; padding: 10px 15px; font-size: 16px; cursor: pointer; }
+    #output { margin-top: 20px; white-space: pre-wrap; background: #f0f0f0; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto; }
+    label { display: block; margin-top: 10px; }
+    input { padding: 5px; width: 300px; }
+  </style>
 </head>
 <body>
-<h2>Simulación de Botonera</h2>
 
-<div class="botonera">
-    <button onclick="mostrarFormulario()">Crear Aviso</button>
-</div>
+<h1>Control de Colas Disvise</h1>
 
-<div class="formulario" id="formulario">
-    <label>Prioridad: <input type="number" id="priority"></label><br>
-    <label>Magic Number: <input type="number" id="magicNumber" value="123456"></label><br>
-    <label>Función: <input type="number" id="function"></label><br>
-    <label>Destino: <input type="text" id="destiny" value></label><br>
-    <button onclick="enviarAviso()">Enviar</button>
-</div>
+<label>ID para crear o destruir colas:
+  <input type="text" id="colaId" placeholder="ejemplo: dispositivo123" />
+</label>
 
-<div class="respuesta" id="respuesta"></div>
+<label>Parámetros para crear petición Divise:</label>
+<input type="number" id="priority" placeholder="Prioridad (ej: 0)" min="0" />
+<input type="number" id="magicNumber" placeholder="Magic Number (ej: 123456)" />
+<input type="number" id="functionCode" placeholder="Función (ej: 1)" />
+<input type="text" id="destiny" placeholder="Destino (ej: dispositivo123)" />
+
+<br/>
+
+<button onclick="crearPeticionDivise()">Crear petición Divise</button><br/>
+<button onclick="mostrarDatosBBDD()">Mostrar contenido BBDD</button><br/>
+<button onclick="crearColas()">Crear colas</button><br/>
+<button onclick="destruirColas()">Destruir colas</button>
+
+<div id="output"></div>
 
 <script>
-    function mostrarFormulario() {
-      document.getElementById('formulario').style.display = 'block';
+  const output = document.getElementById('output');
+
+  function mostrarMensaje(msg) {
+    output.textContent = msg;
+  }
+
+  async function crearPeticionDivise() {
+    const priority = document.getElementById('priority').value;
+    const magicNumber = document.getElementById('magicNumber').value;
+    const functionCode = document.getElementById('functionCode').value;
+    const destiny = document.getElementById('destiny').value;
+
+    if (!priority || !magicNumber || !functionCode || !destiny) {
+      alert('Por favor completa todos los campos para la petición Divise.');
+      return;
     }
 
-    function enviarAviso() {
-      const priority = document.getElementById('priority').value;
-      const magicNumber = document.getElementById('magicNumber').value;
-      const func = document.getElementById('function').value;
-      const destiny = document.getElementById('destiny').value;
-
-      const url = `http://localhost:8080/${priority}/${magicNumber}/${func}/${destiny}`;
-
-      fetch(url)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('respuesta').innerText = "Respuesta: " + data;
-        })
-        .catch(error => {
-          document.getElementById('respuesta').innerText = "Error al enviar: " + error;
-        });
+    try {
+      const url = `/${priority}/${magicNumber}/${functionCode}/${destiny}`;
+      const response = await fetch(url);
+      const text = await response.text();
+      mostrarMensaje(`Respuesta crear petición Divise:\n${text}`);
+    } catch (error) {
+      mostrarMensaje('Error al crear petición Divise: ' + error);
     }
+  }
+
+  async function mostrarDatosBBDD() {
+    try {
+      const response = await fetch('/datos');
+      if (!response.ok) throw new Error('Respuesta no OK: ' + response.status);
+      const data = await response.json();
+      mostrarMensaje('Contenido BBDD:\n' + JSON.stringify(data, null, 2));
+    } catch (error) {
+      mostrarMensaje('Error al obtener datos de la BBDD: ' + error);
+    }
+  }
+
+  async function crearColas() {
+    const id = document.getElementById('colaId').value;
+    if (!id) {
+      alert('Ingresa un ID para crear colas.');
+      return;
+    }
+    try {
+      const url = `/colas/crear?id=${encodeURIComponent(id)}`;
+      const response = await fetch(url);
+      const text = await response.text();
+      mostrarMensaje(`Respuesta crear colas:\n${text}`);
+    } catch (error) {
+      mostrarMensaje('Error al crear colas: ' + error);
+    }
+  }
+
+  async function destruirColas() {
+    const id = document.getElementById('colaId').value;
+    if (!id) {
+      alert('Ingresa un ID para destruir colas.');
+      return;
+    }
+    try {
+      const url = `/colas/destruir/${encodeURIComponent(id)}`;
+      const response = await fetch(url);
+      const text = await response.text();
+      mostrarMensaje(`Respuesta destruir colas:\n${text}`);
+    } catch (error) {
+      mostrarMensaje('Error al destruir colas: ' + error);
+    }
+  }
 </script>
+
 </body>
 </html>
