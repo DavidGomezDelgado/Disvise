@@ -46,7 +46,7 @@ public class DisviseApplication {
 	@GetMapping(path = "/{priority}/{magicNumber}/{function}/{destiny}") //mapeamos para que esta funcion se pueda consultar desde el navegador (solo usado para debuggear)
 	public String avisos(@PathVariable int priority, @PathVariable Long magicNumber,
 						 @PathVariable int function, @PathVariable String destiny){
-		if(magicNumber == 123456L && priority < varGlobales.prioridades &&
+		if(magicNumber == varGlobales.magicNumber && priority < varGlobales.prioridades &&
 				varGlobales.listaGlobal.contains(destiny) && priority <= varGlobales.prioridades
 				&& priority >= 0){
 			AdviseToControler adviseToSend = new AdviseToControler(function);

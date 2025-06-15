@@ -6,6 +6,8 @@ import java.util.List;
 
 public class varGlobales {
     // Variables globales (modificables)
+    public static long magicNumber = 123456;
+
     public static final List<String> listaGlobal =
             Collections.synchronizedList(new ArrayList<>()); //Escalable por si se necesitan hilos
 
