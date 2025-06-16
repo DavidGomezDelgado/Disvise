@@ -36,6 +36,8 @@ rectangle "Sistema ESP32" {
 
     (Esperar interacción de usuario) --> (Entrar en modo de bajo consumo)
     (Consultar datos desde API) --> (Entrar en modo de bajo consumo)
+
+    (Mostrar datos en pantalla) --> (Entrar en modo de bajo consumo)
 }
 
 @enduml
