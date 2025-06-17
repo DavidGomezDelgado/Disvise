@@ -1,0 +1,16 @@
+@startuml
+[*] --> Estado0 : Inicializar parámetros
+
+Estado0 --> Estado1 : Mostrar pantalla
+Estado1 --> Estado2 : Recibir de API
+Estado1 --> Estado0 : Error al recibir petición
+Estado2 --> Estado3 : Mostrar respuesta
+
+Estado3 --> Estado4 : Si botón 1
+Estado3 --> Estado5 : Si botón 2
+Estado3 --> Estado0 : Sin pulsación (timeout)
+
+Estado4 --> Estado0 : MandarPeticion y DeepSleep
+Estado5 --> Estado0 : Pedir siguiente
+
+@enduml

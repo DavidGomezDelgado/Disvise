@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Usuario" as Usuario
+actor "Servidor API" as API
+actor "Botón Físico" as Boton
+
+rectangle "Sistema ESP32" {
+
+    (Inicializar sistema)
+    (Conectarse a WiFi)
+    (Configurar Deep Sleep)
+    (Consultar datos desde API)
+    (Mostrar datos en pantalla)
+    (Esperar interacción de usuario)
+    (Enviar respuesta al servidor)
+    (Entrar en modo de bajo consumo)
+
+    Usuario --> (Inicializar sistema)
+    (Inicializar sistema) --> (Conectarse a WiFi)
+    (Inicializar sistema) --> (Configurar Deep Sleep)
+
+    (Conectarse a WiFi) --> API : "Solicitud de conexión"
+
+    (Consultar datos desde API) --> API : "Solicitar función y lugar"
+    (Consultar datos desde API) --> (Mostrar datos en pantalla)
+
+    Usuario --> (Esperar interacción de usuario)
+    Boton --> (Esperar interacción de usuario)
+
+    (Esperar interacción de usuario) --> (Enviar respuesta al servidor)
+    (Esperar interacción de usuario) --> (Consultar datos desde API) : "Siguiente"
+
+    (Enviar respuesta al servidor) --> API
+
+    (Esperar interacción de usuario) --> (Entrar en modo de bajo consumo)
+    (Consultar datos desde API) --> (Entrar en modo de bajo consumo)
+
+    (Mostrar datos en pantalla) --> (Entrar en modo de bajo consumo)
+}
+
+@enduml

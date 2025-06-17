@@ -1,0 +1,83 @@
+@startuml
+' Estilo opcional
+skinparam classAttributeIconSize 0
+
+package com.disvise.disvise.advise {
+
+    class Advise {
+        - int priority
+        - Long MagicNumber
+        - AdviseToControler advise
+        - LocalDate date
+        - String destiny
+        + getPriority()
+        + setPriority()
+        + getMagicNumber()
+        + setMagicNumber()
+        + getAdvise()
+        + setAdvise()
+        + getDate()
+        + setDate()
+        + getDestiny()
+        + setDestiny()
+    }
+
+    class AdviseToControler {
+        - int function
+        + getFunction()
+        + setFunction()
+    }
+
+    class BbddControler {
+        - JdbcTemplate jdbcTemplate
+        + insertarAdvise(Advise)
+        + obtenerTodos(): List<Advise>
+    }
+
+    class varGlobales {
+        {static} List<String> listaGlobal
+        {static} int prioridades
+        {static} String BBDD_URL
+    }
+
+    class QueueController {
+        - RabbitMQFunctions rabbitMQFunctions
+        + crearCola(String): String
+        + destruirCola(String): String
+    }
+
+    class RabbitMQFunctions {
+        - AmqpAdmin amqpAdmin
+        + crearCola(String)
+        + eliminarCola(String): boolean
+    }
+
+    class RabbitConfig {
+        + jsonMessageConverter(): MessageConverter
+    }
+
+    class DisviseApplication {
+        - RabbitTemplate rabbitTemplate
+        - BbddControler adviseRepository
+        + avisos(priority, magicNumber, function, destiny): String
+        + desencolar(id_cola): AdviseToControler
+        + ControlerToControler(function, id_cola): int
+        + obtenerDatos(): List<Advise>
+    }
+
+    ' Relaciones
+    DisviseApplication --> RabbitTemplate
+    DisviseApplication --> BbddControler
+    DisviseApplication --> AdviseToControler
+    DisviseApplication --> varGlobales
+    DisviseApplication --> Advise
+
+    Advise --> AdviseToControler
+    BbddControler --> Advise
+    BbddControler --> JdbcTemplate
+    QueueController --> RabbitMQFunctions
+    RabbitMQFunctions --> AmqpAdmin
+
+}
+
+@enduml
