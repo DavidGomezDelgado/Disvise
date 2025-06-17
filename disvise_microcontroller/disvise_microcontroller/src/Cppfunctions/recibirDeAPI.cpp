@@ -46,7 +46,8 @@ void recibirDeAPI(int& function, char* place){
             strcpy(place, "Caja Registradora");
             break;
           default:
-          break;
+            function = -1;
+            break;
         }
         
       } else {
